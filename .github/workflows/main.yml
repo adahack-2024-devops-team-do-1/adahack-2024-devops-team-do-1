@@ -1,5 +1,5 @@
 name: Deploy de Infraestrutura
-'on':
+on:
   pull_request:
     types:
       - closed
