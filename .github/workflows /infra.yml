@@ -12,20 +12,23 @@ jobs:
     steps:
       - name: Fazer Clone do repositório
         uses: actions/checkout@v3
-      - name: Configurar credenciais da AWS
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: $AWS_REGION
+
       - name: Instalar AWS CLI
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           sudo ./aws/install
+
+      - name: Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: $AWS_REGION      
+
       - name: Encontrar arquivo de modelo CloudFormation
         run: |
-          TEMPLATE_PATH=$(find . -name '*.yml' -o -name '*.yaml' | head -n 1)
+          TEMPLATE_PATH=$(find . -name 'app.yml')
           echo "Template path: $TEMPLATE_PATH"
           if [ -z "$TEMPLATE_PATH" ]; then
             echo "Arquivo de modelo não encontrado."
